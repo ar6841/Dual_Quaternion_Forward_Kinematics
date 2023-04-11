@@ -22,7 +22,7 @@ namespace pose_dualquat
 // Function that returns transofrmation from frame i to iprev (Equivalent to i_T_iprev)
 template<typename T>
 dualquat::DualQuaternion<T>   
-Pose_frame_i_iprev(DH::DH_joint<T> joint_i)
+Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i) // changed to 'const DH::DH_joint<T>' to pass by refrence and keep data safe
 { 
     T alpha_i_rad_half = (degree_to_radian(joint_i.alpha_i))/2;
     T theta_i_rad_half = (degree_to_radian(joint_i.theta_i))/2;
@@ -49,7 +49,7 @@ Pose_frame_i_iprev(DH::DH_joint<T> joint_i)
 // This one is used commonly wrt to changing the end effector frame to base frame
 template<typename T>
 dualquat::DualQuaternion<T>   
-Pose_frame_iprev_i(DH::DH_joint<T> joint_i)
+Pose_frame_iprev_i(const DH::DH_joint<T>& joint_i)
 { 
     return dualquat::quaternion_conjugate(Pose_frame_i_iprev(joint_i)); //q_pose_iprev_i
 }
