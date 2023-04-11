@@ -113,4 +113,18 @@ transform_line(const DualQuaternion<T>& dq, const Vector3<T>& l, const Vector3<T
     return transform_line(dq, DualQuaternion<T>(l, m));
 }
 
+/* dualquat provides a similar implementation of change of frame, but for sake of clarity and frame uniformity, 
+    I declare it again here
+*/
+
+template<typename T>
+dualquat::DualQuaternion<T>
+adjoint_frame_transformation(const dualquat::DualQuaternion<T>& dq, const dualquat::DualQuaternion<T>& s)
+{
+    // given a s in frame X
+    // dq represents transofrmation Y_T_X
+    // return s in frame Y
+    return quaternion_conjugate(dq) * s * dq;
+}
+
 }   // namespace dualquat

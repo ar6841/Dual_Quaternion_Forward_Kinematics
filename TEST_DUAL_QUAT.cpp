@@ -13,7 +13,7 @@ int main() {
     dualquat::DualQuaternion<double> qd3,qd4;
     qd3 = qd1+qd2;
     qd4 = qd1*qd2;
-    std::pair<double, double>  result = norm(qd4);
+    std::pair<double, double>  result = dualquat::norm(qd4);
     std::cout<<norm(qd4).second;
 
     DH::DH_joint j1(30.0,20.2,1.5,5.5);
@@ -21,6 +21,10 @@ int main() {
     dualquat::DualQuaternion q_iprev_i = quaternion_conjugate(q_i_iprev);
     dualquat::DualQuaternion result2 = q_i_iprev*q_iprev_i;
     std::cout<<"\n"<<(dualquat::is_unit(result2,0.00001));
+    double x;
+
+    dualquat::DualQuaternion<double> QI = dualquat::identity(x);
+    std::cout<<"\n"<<QI.real().w();
 
 
 

@@ -41,6 +41,15 @@ public:
     {}
 
     /**
+     *  Create new dual quaternon given 8 numbers
+    */
+    DualQuaternion(const T& w_real, const T& x_real, const T& y_real, const T& z_real, const T& w_dual, const T& x_dual, const T& y_dual, const T& z_dual)
+    : DualQuaternion(Quaternion<T>(w_real,x_real,y_real,z_real),
+        Quaternion<T>(dual))
+
+    {}
+
+    /**
      * Creates a new dual quaternion with the given vector.
      */
     explicit DualQuaternion(const Vector3<T>& v)
