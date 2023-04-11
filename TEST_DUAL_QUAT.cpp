@@ -15,9 +15,6 @@ int main() {
     qd4 = qd1*qd2;
     std::pair<double, double>  result = norm(qd4);
     std::cout<<norm(qd4).second;
-    std::cout<<"\n"<<sin(0.0);
-    std::cout<<"\n"<<sin(EIGEN_PI/2);
-    std::cout<<"\n"<<(-2-3);
 
     DH::DH_joint j1(30.0,20.2,1.5,5.5);
     dualquat::DualQuaternion q_i_iprev = pose_dualquat::Pose_frame_i_iprev(j1);
