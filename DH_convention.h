@@ -19,7 +19,7 @@ namespace DH
 
             const T alpha_i,a_i; //Joint parameters (contraints)
 
-            const int joint_ID; //experimental 
+            //const int joint_ID; //experimental 
 
             DH_joint()
             {}
@@ -42,4 +42,13 @@ namespace DH
             }
             
     }; // class DH_joint
+
+    // Function to create a pointer variable of type DH joint
+    template<typename T>
+    DH_joint<T>*
+    CreateNewJoint(const T& theta,const T& alpha,const T& a,const T& d)
+    {
+        return new DH::DH_joint<T>(theta,alpha,a,d);
+    }
+
 } // namespace DH_joint
