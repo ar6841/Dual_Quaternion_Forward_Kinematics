@@ -1,10 +1,15 @@
 #pragma once
 /**
- * This header file provides functions anf objects related to the DH convention
+ * This header file provides functions and objects related to the DH approach to computing dual quaternions
  * 
  * Angles are stored in degrees here
  * 
  * TODO: add mass, link COM, 
+ * 
+ * TODO: There is an important assumption made that the joint variables have a home position of 0,
+ * They start from the identity unit dual quaternion (1,0).
+ * The joint variables are being calculated with countercloclwise theta, and +z direction d
+ * 
 */
 namespace DH
 {

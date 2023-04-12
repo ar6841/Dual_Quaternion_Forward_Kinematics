@@ -139,7 +139,8 @@ class RobotLinks
                     IMPORTANT: Here we pre-multiply the DualQuaternions q_i_iprev
                     giving the final result when the loop ends as : q_EndEffector_intertialFrame
 
-                    TODO: There is an important assumption made that the joint variables have no offsets,
+                    TODO: There is an important assumption made that the joint variables have a home position of 0,
+                    They stayrt from the identity unit dual quaternion.
                     The joint variables are being calculated with countercloclwise theta, and +z direction d
                 */
                q_curr = currentJointNode->pose_current_prev()*q_curr;
