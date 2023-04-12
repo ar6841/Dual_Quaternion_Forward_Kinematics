@@ -44,11 +44,20 @@ namespace DH
     }; // class DH_joint
 
     // Function to create a pointer variable of type DH joint
+    /*
     template<typename T>
     DH_joint<T>*
     CreateNewJoint(const T& theta,const T& alpha,const T& a,const T& d)
     {
-        return new DH::DH_joint<T>(theta,alpha,a,d);
+        return new DH_joint<T>(theta,alpha,a,d);
     }
+    // Function to avoid memory leaks
+    template<typename T>
+    bool DeleteJoint(DH_joint<T>& JointToDelete)
+    {
+        delete JointToDelete;
+        return 1;
+    }
+    */
 
 } // namespace DH_joint

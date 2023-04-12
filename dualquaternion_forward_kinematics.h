@@ -1,11 +1,13 @@
 #pragma once
 #include "pose_dual_quaternion.h"
 
-// What does this file contain?
-// Create a dynamically linked list of the joints in the robot
-// Create a class RobotLinks that contains the joint information as a linked list
-// The joint_data is passed by refrence so it can be constantly changing
+/*
+Create a dynamically linked list of the joints in the robot
+Create a class RobotLinks that contains the joint information as a linked list
+The joint_data is passed by refrence so it can be constantly changing
 
+NOTE: All functions were kept 'inline', this reduces readability but improves performance.
+*/ 
 namespace forwardk_dualquat
 {
 
@@ -13,17 +15,18 @@ template<typename T>
 class JointNode
 {
     public:
-        DH::DH_joint<T>& joint_data;
+        DH::DH_joint<T>* joint_data;
         JointNode<T>* next;
        
         JointNode()
         {
             //Constructor for JointNode
         }
+
         // Function to return the current pose tranformation DualQuaternion between current and prev
         dualquat::DualQuaternion<T> pose_current_prev()
         {
-            return pose_dualquat::Pose_frame_i_iprev(joint_data);
+            return pose_dualquat::Pose_frame_i_iprev(*joint_data); //Pass by refrence
         }
 };
 
@@ -33,29 +36,45 @@ class RobotLinks
     static_assert(std::is_floating_point<T>::value,
         "Template parameter T must be floating_point type.");
 
-    private:
+    private: // Data about this linkage
         JointNode<T>* head;
+        int NUM_JOINTS; 
 
     public:
-    //Construct the link
+    // Construct the link
         RobotLinks() 
         {
             head = nullptr;
+            NUM_JOINTS = 0; // let 0 represent the inertial frame
         }
 
+    // Destructor to delete all the nodes in the list
+        ~RobotLinks() 
+        {
+       
+            JointNode<T>* current = head;
+            while (current != NULL) 
+            {
+                JointNode<T>* next = current->next;  // save a pointer to the next node
+                delete current;              // delete the current node
+                current = next;              // move to the next node
+            }
+            head = NULL;    // set the head pointer to NULL to indicate the list is empty
+        }
     //Delete the link
       /*  ~RobotForward()
         {
             //ADD destructor logic
         }*/
 
-    // method to add a new JointNode to the list
-        void addJoint(const DH::DH_joint<T>& newJoint) 
+    // Method to add a new JointNode to the list
+        void addJoint(DH::DH_joint<T>& newJoint) 
         {
             JointNode<T>* newJointNode = new JointNode<T>;
-            newJointNode->joint_data = newJoint;
+            newJointNode->joint_data = &newJoint;
             newJointNode->next = head;
             head = newJointNode;
+            NUM_JOINTS++;
         }
 
         // EXPERIMENTAL method to remove a JointNode from the list 
@@ -84,24 +103,53 @@ class RobotLinks
             }
         } // End of experimental
 
-        // method to access a JointNode in the list by index
-        DH::DH_joint<T> getJoint(const int& index) 
+        // Method to access a JointNode in the list by index
+        JointNode<T>* getJoint(const int& index) 
         {
             JointNode<T>* currentJointNode = head;
-            for(int i=0; i<index; i++)
-            {
-                if(currentJointNode != nullptr)
-                {
-                    currentJointNode = currentJointNode->next;
-                }
-                else
-                {
-                    break;
-                }
+            int i=NUM_JOINTS;
 
+            while(i>index && currentJointNode != nullptr)
+            {
+                currentJointNode = currentJointNode->next;
+                i--;
             }
-            return currentJointNode->joint_data;
+            return currentJointNode;
         }
+
+        /* Return the number of total joints
+        */
+        int getNumJointsTotal() { return NUM_JOINTS; }  
+
+        // Call this function to return the tranformation between the end effector and the inertial frame
+        dualquat::DualQuaternion<T>
+        ComputeForwardKinematics(const int& NumJoints = -1)
+        {
+            JointNode<T>* currentJointNode = head;
+            
+            int i = ((NumJoints == -1)? NUM_JOINTS : NumJoints);
+
+            T type; //detect type for identety function (just a placeholder)
+
+            dualquat::DualQuaternion<T> q_curr = dualquat::identity(type);
+
+            while(i>0 && currentJointNode != nullptr)
+            {
+                /*
+                    IMPORTANT: Here we pre-multiply the DualQuaternions q_i_iprev
+                    giving the final result when the loop ends as : q_EndEffector_intertialFrame
+
+                    TODO: There is an important assumption made that the joint variables have no offsets,
+                    The joint variables are being calculated with countercloclwise theta, and +z direction d
+                */
+               q_curr = currentJointNode->pose_current_prev()*q_curr;
+               currentJointNode = currentJointNode->next;
+               i--;
+            }
+            return q_curr;
+        }
+
+
         // EXPERIMENTAL method to access a JointNode in the list by ID
         /*
         DH::DH_joint<T> getJoint(const DH::DH_joint<T>& jointToSearch) 
