@@ -127,7 +127,7 @@ class RobotLinks
         {
             JointNode<T>* currentJointNode = head;
             
-            int i = ((NumJoints == -1)? NUM_JOINTS : NumJoints);
+            int i = ((NumJoints == -1)? NUM_JOINTS : NumJoints); // DEFAULT VALUE = NUM_JOINTS
 
             T type; //detect type for identety function (just a placeholder)
 
