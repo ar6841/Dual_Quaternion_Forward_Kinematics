@@ -11,7 +11,7 @@
  *                                                            q_endeffector_0 = q_1_0*q_2_1*q_endeffector_2
 */
 #include "dualquat/dualquat.h"
-#include "DH_convention.h"
+#include "DH_parameters.h"
 
 #define degree_to_radian(deg) ((deg*EIGEN_PI)/180.0)
 #define radian_to_degree(rad) ((rad*180.0)/EIGEN_PI)
@@ -24,7 +24,7 @@ namespace pose_dualquat
 */
 template<typename T>
 dualquat::DualQuaternion<T>   
-Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i) // changed to 'const DH::DH_joint<T>' to pass by refrence and keep data safe
+Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i) // Pass by reference
 { 
     T alpha_i_rad_half = (degree_to_radian(joint_i.alpha_i))/2;
     T theta_i_rad_half = (degree_to_radian(joint_i.theta_i))/2;

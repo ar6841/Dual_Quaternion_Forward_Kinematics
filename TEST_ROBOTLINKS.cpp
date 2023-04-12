@@ -4,7 +4,7 @@ using namespace std;
 int main()
 {
     forwardk_dualquat::RobotLinks<double> R3_robot;
-    DH::DH_joint<double> J1(33.33,0.0,10.0,0.0);
+    DH::DH_joint<double> J1(33.33,2.0,10.0,6.1);
     DH::DH_joint<double> J2(0,0.0,5.0,0.0);
     DH::DH_joint<double> J3(0.22,0.0,2.0,0.0);
 
@@ -29,6 +29,11 @@ int main()
     cout<<"\n"<<"Equality? : "<<dualquat::almost_equal(Q1,Q2,0.001); //Its working!
     cout<<"\n"<<"Is unit Q1? : "<<dualquat::is_unit(Q1,0.001);
     cout<<"\n"<<"Is unit Q2? : "<<dualquat::is_unit(Q2,0.001);
+
+    // Test frame quaternions
+
+    dualquat::DualQuaternion<double> QT1 = pose_dualquat::Pose_frame_i_iprev(J1);
+
 
 
     // 
