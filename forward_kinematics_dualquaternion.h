@@ -88,6 +88,7 @@ class RobotLinks
         Eigen::Matrix<T,Eigen::Dynamic,1>
         getThetaDotVec()
         {   
+            // TODO: account for prismatic joints
             Eigen::Matrix<T,Eigen::Dynamic,1> theta_dot_vec(LinkedJoints.size(),1);
 
             for(int i=0; i<LinkedJoints.size() ;i++)

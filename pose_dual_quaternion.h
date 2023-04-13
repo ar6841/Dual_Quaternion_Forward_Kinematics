@@ -1,7 +1,8 @@
 #pragma once
 /**
  * This header file provides functions that return pose in dual quaternion form
- * The DH conventions and equations make sure that the quaternion is a unit dual quaternion
+ * 
+ * The DH conventions and equations make sure that the pose dualquat is a unit dualquat
  * 
  * NOTES: THE CORRECT CONJUGATE TO USE ACCORDING TO THE PAPER is quaternion_conjugate() within dualquat -> dualquat_common.h
  * 
