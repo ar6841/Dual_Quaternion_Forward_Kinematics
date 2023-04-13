@@ -6,7 +6,9 @@ Create a dynamically linked list of the joints in the robot
 Create a class RobotLinks that contains the joint information as a linked list
 The joint_data is passed by refrence so it can be constantly changing
 
-NOTE: All functions were kept 'inline', this reduces readability but improves performance.
+NOTE: All functions were kept 'inline', this reduces readability but improves performance in this case.
+
+TODO: Add d_dot vector function
 */ 
 namespace forwardk_dualquat
 {
@@ -26,7 +28,7 @@ class JointNode
         // Function to return the current pose tranformation DualQuaternion between current and prev
         dualquat::DualQuaternion<T> pose_current_prev()
         {
-            return pose_dualquat::Pose_frame_i_iprev(*joint_data); //Pass by refrence
+            return Pose_frame_i_iprev(*joint_data); //Pass by refrence
         }
 };
 

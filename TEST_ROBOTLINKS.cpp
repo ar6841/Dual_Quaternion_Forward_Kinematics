@@ -1,12 +1,15 @@
 #include <iostream>
-#include "dualquaternion_forward_kinematics.h"
+#include "forward_kinematics_dualquaternion.h"
+#include "jacobians.h"
+
 using namespace std;
 int main()
 {
-    forwardk_dualquat::RobotLinks<double> R3_robot;
-    DH::DH_joint<double> J1(33.33,2.0,10.0,6.1);
-    DH::DH_joint<double> J2(0,0.0,5.0,0.0);
+    ForwardKinematics::RobotLinks<double> R3_robot;
+    DH::DH_joint<double> J1(3.33,2.0,10.0,6.1);
+    DH::DH_joint<double> J2(99,0.0,5.0,0.0);
     DH::DH_joint<double> J3(0.22,0.0,2.0,0.0);
+
 
     R3_robot.addJoint(J1);
     R3_robot.addJoint(J2);
@@ -16,14 +19,17 @@ int main()
 
     //Test dynamic mempry allocation
 
-    cout<<"\n"<<R3_robot.getJoint(1)->joint_data->theta_i;
+    cout<<"\n"<<R3_robot.getJoint(0)->theta_i;
 
     J1.theta_i = 992.2423;
-    cout<<"\n"<<R3_robot.getJoint(2)->joint_data->theta_i;
-    cout<<"\n"<<R3_robot.getJoint(1)->joint_data->theta_i;
+    
+    cout<<"\n"<<R3_robot.getJoint(0)->theta_i;
+
+    J1.theta_i = 60.23;
+    cout<<"\n"<<R3_robot.getJoint(0)->theta_i;
 
     // Test kinematics result
-    dualquat::DualQuaternion<double> Q1 = pose_dualquat::Pose_frame_i_iprev(J1)*pose_dualquat::Pose_frame_i_iprev(J2)*pose_dualquat::Pose_frame_i_iprev(J3);
+    dualquat::DualQuaternion<double> Q1 = ForwardKinematics::Pose_frame_iprev_i(J3)*ForwardKinematics::Pose_frame_iprev_i(J2)*ForwardKinematics::Pose_frame_iprev_i(J1);
     dualquat::DualQuaternion<double> Q2 = R3_robot.ComputeForwardKinematics();
 
     cout<<"\n"<<"Equality? : "<<dualquat::almost_equal(Q1,Q2,0.001); //Its working!
@@ -32,9 +38,11 @@ int main()
 
     // Test frame quaternions
 
-    dualquat::DualQuaternion<double> QT1 = pose_dualquat::Pose_frame_i_iprev(J1);
+    // Test Jacobians
 
-
+    cout<<"\n Jacobian Matrix:"<<ForwardKinematics::ComputeJacobian(R3_robot)<<endl;
+    cout<<"\n Theta dot:"<<R3_robot.getThetaDotVec()<<endl;
+    cout<<"\n pose_dot:"<<ForwardKinematics::compute_pose_dot(R3_robot)<<endl;
 
     // 
     return 0;

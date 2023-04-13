@@ -16,14 +16,19 @@
 
 // TODO: use convert_to_dualquat() in dualquat_helper which converts from screw paramers to dual quaternion.
 
-#include "dualquat/dualquat.h" // #pragma once everywhere makes sure file is not too large 
+#include"dualquat/dualquat.h"
 
 namespace ScrewTheory
 {
+
 template<typename T>
-struct ScewParameters
+struct ScrewParameters
 {
-    Eigen::Quaternion<T> theta_quat, d_quat, l_quat, m_quat;
+    T theta, d;
+
+    const Eigen::Vector3<T> l;
+    const Eigen::Vector3<T> m;
+
 };
 
 }
