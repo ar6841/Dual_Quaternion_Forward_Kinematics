@@ -3,8 +3,8 @@
 #include <vector>
 
 /*
-Create a dynamically linked list of the joints in the robot
-Create a class RobotLinks that contains the joint information as a linked list
+
+Class RobotLinks that contains the joint information as a Vector
 The joint_data is passed by refrence so it can be constantly changing
 
 NOTE: All functions were kept 'inline', this reduces readability but improves performance.
@@ -22,6 +22,17 @@ class RobotLinks
         
     private:
         std::vector<DH::DH_joint<T>*> LinkedJoints;
+
+        /* 
+            Index out of bounds error
+        */ 
+        void Check_ERROR_OUTOFBOUNDS(const std::string& error, const int& pos)
+        {
+            if(pos>LinkedJoints.size()-1)
+            {
+                throw std::invalid_argument(("\n Position argument out of bounds in function : " + error));
+            }
+        }
 
     public:
 
@@ -44,6 +55,10 @@ class RobotLinks
             LinkedJoints[pos] = &newJoint;
         }
 
+        /*
+            Function to return a pointer to the joint @pos index
+        */ 
+
         DH::DH_joint<T>* getJoint(const int& pos)
         { 
             Check_ERROR_OUTOFBOUNDS("getJoint()", pos);
@@ -55,8 +70,10 @@ class RobotLinks
             return LinkedJoints.size();
         }
 
-        // Call this function to return the tranformation between the end effector and the inertial frame
-        // Calculate forward kinematics UPTO joint NumJoints
+        /*
+            Function to return the tranformation between the end effector and the inertial frame
+            Calculate forward kinematics UPTO joint NumJoints
+        */ 
         dualquat::DualQuaternion<T>
         ComputeForwardKinematics(const int& NumJoints = -1)
         {
@@ -75,16 +92,9 @@ class RobotLinks
 
             return q_curr;
         }
-
-        
-        void Check_ERROR_OUTOFBOUNDS(const std::string& error, const int& pos)
-        {
-            if(pos>LinkedJoints.size()-1)
-            {
-                throw std::invalid_argument(("\n Position argument out of bounds in function : " + error));
-            }
-        }
-
+        /*
+            Function to return a column vector of (joint variables)_dot
+        */ 
         Eigen::Matrix<T,Eigen::Dynamic,1>
         getThetaDotVec()
         {   

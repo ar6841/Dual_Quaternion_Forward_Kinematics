@@ -17,10 +17,9 @@ namespace ForwardKinematics
 {
 
 /*
-    Function that returns the dualquat pose_dot_iprev_i
-    Inputs  -> (joint params)
-    Outputs -> (angular and linear velocity of frames)
-
+    Function that returns the jacobian matrix
+    Inputs  -> (a linked Robot)
+    Outputs -> (Matrix of size (8,NumJoints))
 */
 template<typename T>
 Eigen::Matrix<T,8,Eigen::Dynamic> // Default storage order is ColumnMajour
@@ -74,13 +73,17 @@ ComputeJacobian(RobotLinks<T>& Robot)
 
     return Jacobian;
 }
-
+/*
+    Function that returns the pose_dot quaternion members as vector
+    Inputs  -> (a linked Robot)
+    Outputs -> (Matrix of size (8,1))
+*/
 template<typename T>
-Eigen::Matrix<T,8,Eigen::Dynamic> // Default storage order is ColumnMajour
+Eigen::Matrix<T,8,1> // Default storage order is ColumnMajour
 compute_pose_dot(RobotLinks<T>& Robot)
 {
     //const int N = Robot.getNumJointsTotal();
-    return Eigen::Matrix<T,8,Eigen::Dynamic>(ComputeJacobian(Robot)*Robot.getThetaDotVec());
+    return Eigen::Matrix<T,8,1>(ComputeJacobian(Robot)*Robot.getThetaDotVec());
 }
 
 } // namespace Jacobian
