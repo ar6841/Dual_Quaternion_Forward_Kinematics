@@ -64,6 +64,17 @@ $$
 \end{array}\right]
 $$
 
+Which in cartesian coordinates is represented by the Transformation matrix:
+
+$$
+{ }^i T_{i-1}=\left[\begin{array}{ccc:c}
+\cos \theta_i & \sin \theta_i & 0 & -a_i \\
+-\cos \alpha_i \sin \theta_i & \cos \alpha_i \cos \theta_i & \sin \alpha_i & -d_i \sin \alpha_i \\
+\sin \alpha_i \sin \theta_i & -\sin \alpha_i \cos \theta_i & \cos \alpha_i & -d_i \cos \alpha_i \\
+\hdashline 0 & 0 & 0 & 1
+\end{array}\right]
+$$
+
 Composition transformations
 
 $$
