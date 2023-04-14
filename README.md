@@ -23,10 +23,14 @@ Here are some short examples of some of the functions included and how to use th
 2. Add all the joints in the order you need using the `RobotLinks` class
 
 `MyRobot.addJoint(J1);`
+
 `MyRobot.addJoint(J2);`
+
 `MyRobot.addJoint(J3);`
 
-3. Use `ComputeForwardKinematics()` to compute the pose of the end frame wrt to the inerial frame. (Equivalent to $$ { }^{0} T_E $$)
+3. Use `ComputeForwardKinematics()` to compute the pose of the end frame wrt to the inerial frame. (Equivalent to 
+${ }^0 T_{N} $
+)
 
 `dualquat::DualQuaternion<T> pose = MyRobot.ComputeForwardKinematics()`
 
@@ -39,12 +43,16 @@ Here are some short examples of some of the functions included and how to use th
 `Eigen::Matrix<T,8,1> pose_vec(compute_pose_dot(MyRobot));`
 
 ## Explanation
+A dual quaternion:
+
+$$
+\underline{q}=\mathcal{P}(\underline{q})+\varepsilon \mathcal{D}(\underline{q})
+$$
 
 The relative pose from frame i to frame i-1 in dual quaternion space is given by:
 
 $$
-
-q_{\mathrm{i} / \mathrm{i}-\mathrm{1}}=\left[\begin{array}{c}
+{ }^i \underline{q}_{i-1}=\left[\begin{array}{c}
 \cos (\alpha / 2) \cos (\theta / 2) \\
 \sin (\alpha / 2) \cos (\theta / 2) \\
 \sin (\alpha / 2) \sin (\theta / 2) \\
@@ -54,8 +62,18 @@ q_{\mathrm{i} / \mathrm{i}-\mathrm{1}}=\left[\begin{array}{c}
 \frac{1}{2} a_i \cos \left(\alpha_i / 2\right) \sin \left(\theta_i / 2\right)+\frac{1}{2} d_i \sin \left(\alpha_i / 2\right) \cos \left(\theta_i / 2\right) \\
 \frac{1}{2} d_i \cos \left(\alpha_i / 2\right) \cos \left(\theta_i / 2\right)-\frac{1}{2} a_i \sin \left(\alpha_i / 2\right) \sin \left(\theta_i / 2\right)
 \end{array}\right]
+$$
+
+Composition transformations
 
 $$
+{ }^0 \underline{q}_{N}= { }^N{ }^-{ }^1 \underline{q}_{N}. . . { }^2 \underline{q}_{3} { }^1 \underline{q}_{2} { }^0 \underline{q}_{1}
+$$
+
+Jacobians:
+
+Mapping from joint rates to pose rate:
+
 
 ## References
 
