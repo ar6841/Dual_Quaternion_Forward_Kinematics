@@ -75,6 +75,17 @@ Jacobians:
 Mapping from joint rates to pose rate:
 
 
+## Compatibility
+
+Supports C++ 11 or higher.
+
+| Compiler | Version           | Remarks |
+| -------- | ----------------- | ------- |
+| gcc      | 5.5.0 or higher.  |         |
+| clang    | 7.0.0 or higher.  |         |
+| msvc     | 16.5.4 or higher. |         |
+
+
 ## References
 
 1. [https://dcsl.gatech.edu/papers/mdpi18%20(Printed).pdf]
