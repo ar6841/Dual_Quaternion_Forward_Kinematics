@@ -49,6 +49,10 @@ $$
 \underline{q}=\mathcal{P}(\underline{q})+\varepsilon \mathcal{D}(\underline{q})
 $$
 
+
+Where $\mathcal{P}(\underline{q})$ is the primary quaternion, $\mathcal{D}(\underline{q})$ is the dual quaternion, and $\varepsilon^2=0$ 
+
+
 The relative pose from frame i to frame i-1 in dual quaternion space is given by:
 
 $$
