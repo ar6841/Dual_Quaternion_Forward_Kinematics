@@ -82,7 +82,7 @@ $$
 Composition transformations
 
 $$
-{ }^0 \underline{q}_{N}= { }^N{ }^-{ }^1 \underline{q}_{N}. . . { }^2 \underline{q}_{3} { }^1 \underline{q}_{2} { }^0 \underline{q}_{1}
+{ }^0 \underline{q}_{N}= { }^2 \underline{q}_{3} { }^1 \underline{q}_{2} { }^0 \underline{q}_{1}. . .{ }^N{ }^-{ }^1 \underline{q}_{N} 
 $$
 
 Jacobians:
