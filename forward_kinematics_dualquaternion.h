@@ -87,7 +87,7 @@ class RobotLinks
 
             for(int i = 0; i<=joint_i; i++)
             {
-                q_curr = Pose_frame_iprev_i(*LinkedJoints[i])*q_curr;
+                q_curr = q_curr*Pose_frame_iprev_i(*LinkedJoints[i]);
             }
 
             return q_curr;

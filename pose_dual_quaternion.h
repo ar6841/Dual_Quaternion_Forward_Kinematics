@@ -23,12 +23,12 @@
 namespace ForwardKinematics
 {
 /* 
-   Function that returns transofrmation from frame i to iprev (Equivalent to i_T_iprev)
-   as a unit dual quaternion
+Function that returns transofrmation from frame i to iprev. Equivalent to i_T_iprev in `Introduction to Robotics
+Mechanics and Control Fourth Edition John J. Craig` as a unit dual quaternion.
 */
 template<typename T>
 dualquat::DualQuaternion<T>   
-Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i) // Pass by reference
+Pose_frame_iprev_i(const DH::DH_joint<T>& joint_i) // Pass by reference
 { 
     T alpha_i_rad_half = (degree_to_radian(joint_i.alpha_i))/2;
     T theta_i_rad_half = (degree_to_radian(joint_i.theta_i))/2;
@@ -51,11 +51,11 @@ Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i) // Pass by reference
 /* 
    Function that returns transofrmation from frame iprev to i (Equivalent to iprev_T_i)
    as a unit dual quaternion
-   This one is used commonly wrt to changing the end effector frame to base frame
+   This one is used commonly wrt to changing the end effector frame to base frame.
 */   
 template<typename T>
 dualquat::DualQuaternion<T>   
-Pose_frame_iprev_i(const DH::DH_joint<T>& joint_i)
+Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i)
 { 
     return dualquat::quaternion_conjugate(Pose_frame_i_iprev(joint_i)); //q_pose_iprev_i
 }
