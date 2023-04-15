@@ -56,7 +56,7 @@ Where $\mathcal{P}(\underline{q})$ is the primary quaternion, $\mathcal{D}(\unde
 The relative pose from frame i to frame i-1 in dual quaternion space is given by:
 
 $$
-{ }^i \underline{q}_{i-1}=\left[\begin{array}{c}
+{ }^{i-1} \underline{q}_{ i}=\left[\begin{array}{c}
 \cos (\alpha / 2) \cos (\theta / 2) \\
 \sin (\alpha / 2) \cos (\theta / 2) \\
 \sin (\alpha / 2) \sin (\theta / 2) \\
@@ -71,13 +71,14 @@ $$
 Which in cartesian coordinates is represented by the Transformation matrix:
 
 $$
-{ }^i T_{i-1}=\left[\begin{array}{ccc:c}
-\cos \theta_i & \sin \theta_i & 0 & -a_i \\
--\cos \alpha_i \sin \theta_i & \cos \alpha_i \cos \theta_i & \sin \alpha_i & -d_i \sin \alpha_i \\
-\sin \alpha_i \sin \theta_i & -\sin \alpha_i \cos \theta_i & \cos \alpha_i & -d_i \cos \alpha_i \\
-\hdashline 0 & 0 & 0 & 1
+{ }^{i-1} T_{i}=\left[\begin{array}{cccc}
+\cos \theta_i & -\sin \theta_i \cos \alpha_i & \sin \theta_i \sin \alpha_i & a_i \cos \theta_i \\
+\sin \theta_i & \cos \theta_i \cos \alpha_i & -\cos \theta_i \sin \alpha_i & a_i \sin \theta_i \\
+0 & \sin \alpha_i & \cos \alpha_i & d_i \\
+0 & 0 & 0 & 1
 \end{array}\right]
 $$
+
 
 Composition transformations
 
