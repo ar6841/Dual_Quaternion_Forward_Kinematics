@@ -41,10 +41,10 @@ int main()
     // Test Jacobians
 
     cout<<"\n Jacobian Matrix:"<<Kinematics::ComputeJacobian(R3_robot)<<endl;
-    cout<<"\n Theta dot:"<<R3_robot.getThetaDotVec()<<endl;
+    cout<<"\n Theta dot:"<<R3_robot.getJointDotVec()<<endl;
     cout<<"\n pose_dot:"<<Kinematics::compute_pose_dot(R3_robot)<<endl;
 
-    cout<<"\n Theta:"<<R3_robot.getThetaVec()<<endl;
+    cout<<"\n Theta:"<<R3_robot.getJointVec()<<endl;
 
     Eigen::Matrix<double,3,1> theta_n;
 
@@ -52,10 +52,10 @@ int main()
 
     cout<<"\n Theta:"<<theta_n<<endl;
 
-    R3_robot.setThetaVec(theta_n);
+    R3_robot.setJointVec(theta_n);
 
 
-    cout<<"\n Theta:"<<R3_robot.getThetaVec()<<endl;
+    cout<<"\n Theta:"<<R3_robot.getJointVec()<<endl;
 
 
     // 

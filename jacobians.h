@@ -83,7 +83,7 @@ Eigen::Matrix<T,8,1> // Default storage order is ColumnMajour
 compute_pose_dot(RobotLinks<T>& Robot)
 {
     //const int N = Robot.getNumJointsTotal();
-    return Eigen::Matrix<T,8,1>(ComputeJacobian(Robot)*Robot.getThetaDotVec());
+    return Eigen::Matrix<T,8,1>(ComputeJacobian(Robot)*Robot.getJointDotVec());
 }
 
 } // namespace Jacobian

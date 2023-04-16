@@ -4,8 +4,6 @@
  * 
  * Angles are stored in degrees here
  * 
- * TODO: add thet_dot initialization
- * 
  * TODO: add mass, link COM, 
  * 
  * TODO: There is an important assumption made that the joint variables have a home position of 0,
@@ -17,133 +15,123 @@ namespace DH
 {
     
 enum JointType{REVOLUTE,PRISMATIC,MIX};
-    // ASSUMPTION: Only revolute types for now
-    template<typename T>
-    class DH_joint
-    {
-        private:
-            const JointType type_i;
+template<typename T>
+class DH_joint
+{
+    private:
+        const JointType type_i;
 
-        public:
-            T theta_i,d_i; //Joint variables (Don't make this private its too annoying)
+        // Only constuctors can call these functions
+        void setJointVar(const T& theta, const T& d);
 
-            T theta_dot_i, d_dot_i; //joint velocity
+    public:
+        T theta_i,d_i;
 
-            T theta_2dot_i, d_2dot_i; // joint Acceleration
+        T *joint_var_i, *joint_var_dot_i; // points to theta_i/d_i depending on Revolute or Prismatic
 
-            const T alpha_i, a_i, joint_offset; //Joint constraints
+        T theta_dot_i, d_dot_i; //joint velocity
 
-            DH_joint()
-            {}
+        T theta_2dot_i, d_2dot_i; // joint Acceleration
 
-            explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d) : 
-            
-            theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
-            theta_dot_i(T(0)), d_dot_i(T(0)), 
-            theta_2dot_i(T(0)), d_2dot_i(T(0)),
-            type_i(REVOLUTE), joint_offset(T(0))
-            {
-                setJointVar(theta_i,d_i); //add the offset to the correct joint variable
-            }
+        const T alpha_i, a_i, joint_offset; //Joint constraints
 
-           explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
-            
-            theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
-            theta_dot_i(T(0)), d_dot_i(T(0)), 
-            theta_2dot_i(T(0)), d_2dot_i(T(0)),
-            type_i(REVOLUTE), joint_offset(T(offset))
-            {
-                //constructor to initialize the DH joint object
-                setJointVar(theta_i,d_i);
-            }
+        DH_joint()
+        {}
 
-            explicit DH_joint(const JointType& type, const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
-            theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
-            theta_dot_i(T(0)), d_dot_i(T(0)), 
-            theta_2dot_i(T(0)), d_2dot_i(T(0)),
-            type_i(type), joint_offset(T(offset))
-            {
-                //constructor to initialize the DH joint object
-                setJointVar(theta_i,d_i);
-            }
-            
-
-            //Member functions
-            T getJointVar(); // Avoid the unecessary calculation to imporve performance
-            T getJointVar(const bool& offset);
-
-            void setJointVar(const T& theta, const T& d);
-            
-    }; // class DH_joint
-
-    template<typename T>
-    inline T DH_joint<T>::getJointVar()
-    {
-        switch(type_i)
+        explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d) : 
+        
+        theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
+        theta_dot_i(T(0)), d_dot_i(T(0)), 
+        theta_2dot_i(T(0)), d_2dot_i(T(0)),
+        type_i(REVOLUTE), joint_offset(T(0))
         {
-            case REVOLUTE:
-                return theta_i - joint_offset;
-                break;
-
-            case PRISMATIC:
-                return d_i - joint_offset;
-                break;
-                
-            case MIX:
-                return NULL; //Add support for mixed joints
-            default:
-                return NULL;
-                break;
-            
+            setJointVar(theta_i,d_i); //add the offset to the correct joint variable
         }
-    
-    }
 
-    template<typename T>
-    inline T DH_joint<T>::getJointVar(const bool& offset)
-    {
-        T result = offset ? T(1):T(0);
-
-        switch(type_i)
+        explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
+        
+        theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
+        theta_dot_i(T(0)), d_dot_i(T(0)), 
+        theta_2dot_i(T(0)), d_2dot_i(T(0)),
+        type_i(REVOLUTE), joint_offset(T(offset))
         {
-            case REVOLUTE:
-                return theta_i - result*joint_offset;
-                break;
-
-            case PRISMATIC:
-                return d_i - result*joint_offset;
-                break;
-                
-            case MIX:
-                return NULL; //Add support for mixed joints
-            default:
-                return NULL;
-                break;
-            
+            //constructor to initialize the DH joint object
+            setJointVar(theta_i,d_i);
         }
-    
-    }
-    template<typename T>
-    inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
-    {
-        switch(type_i)
+
+        explicit DH_joint(const JointType& type, const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
+        theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
+        theta_dot_i(T(0)), d_dot_i(T(0)), 
+        theta_2dot_i(T(0)), d_2dot_i(T(0)),
+        type_i(type), joint_offset(T(offset))
         {
-            case REVOLUTE:
-                theta_i = theta+joint_offset;
-            break;
-
-            case PRISMATIC:
-                d_i = d + joint_offset;
-            break;
-
-            case MIX: //Add support for mixed joints
-            break;
-
-            default:
-            break;
-            
+            //constructor to initialize the DH joint object
+            setJointVar(theta_i,d_i);
         }
+        
+
+        //Member functions
+        T getJointVar(); // Avoid the unecessary calculation to imporve performance
+        T getJointVar(const bool& offset);
+
+        void setJointVar(const T& q); //asume no offset or offset is off
+        void setJointVar(const T& q, const bool& offset);
+        
+}; // class DH_joint
+
+template<typename T>
+inline T DH_joint<T>::getJointVar()
+{
+    return *joint_var_i;
+}
+
+template<typename T>
+inline T DH_joint<T>::getJointVar(const bool& offset)
+{
+    T result = offset ? T(1):T(0);
+    return *joint_var_i - result*joint_offset;
+}
+/*
+    Setter functions
+*/
+template<typename T>
+inline void DH_joint<T>::setJointVar(const T& q)
+{
+  *joint_var_i = q;
+}
+
+template<typename T>
+inline void DH_joint<T>::setJointVar(const T& q, const bool& offset)
+{
+    T result = offset ? T(1):T(0);
+    *joint_var_i = q + result*joint_offset;
+}
+
+template<typename T>
+inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
+{
+    switch(type_i)
+    {
+        case REVOLUTE:
+            theta_i = theta+joint_offset;
+            joint_var_i = &theta_i;
+            joint_var_dot_i = &theta_dot_i;
+        break;
+
+        case PRISMATIC:
+            d_i = d + joint_offset;
+            joint_var_i = &d_i;
+            joint_var_dot_i = &d_dot_i;
+        break;
+
+        case MIX: //Add support for mixed joints
+        break;
+
+        default:
+        break;
+        
     }
+}
 
 
 

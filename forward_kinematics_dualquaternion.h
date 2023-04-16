@@ -9,7 +9,6 @@ The joint_data is passed by refrence so it can be constantly changing
 
 NOTE: All functions were kept 'inline', this reduces readability but improves performance.
 
-TODO: Add d_dot vector function
 */ 
 namespace Kinematics
 {
@@ -43,11 +42,24 @@ class RobotLinks
         */ 
         dualquat::DualQuaternion<T> ComputeForwardKinematics(const int& NumJoints = -1);
 
-        Eigen::Matrix<T,Eigen::Dynamic,1> getThetaDotVec(); //Function to return a column vector of (joint variables)_dot
+        Eigen::Matrix<T,Eigen::Dynamic,1> getJointDotVec(); //Function to return a column vector of (joint variables)_dot
 
-        Eigen::Matrix<T,Eigen::Dynamic,1> getThetaVec(); //Function to return a column vector of (joint variables)
+        Eigen::Matrix<T,Eigen::Dynamic,1> getJointVec(); //Function to return a column vector of (joint variables)
 
-        void setThetaVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& theta_new); //Function to set the joint variables, given a vector of joint variables
+        /*
+            Function to return a column vector of (joint variables) and swtich bool on or off
+        */
+        Eigen::Matrix<T,Eigen::Dynamic,1> getJointVec(const bool& offset);
+
+        /*
+            Function to set the joint variables, given a vector of joint variables
+        */
+        void setJointVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_new);
+
+        /*
+            Function to set the joint variables, given a vector of joint variables and swtich bool on or off
+        */ 
+        void setJointVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_new, const bool& offset);
 
         
 }; // class RobotLinks
@@ -111,41 +123,67 @@ inline dualquat::DualQuaternion<T> RobotLinks<T>::ComputeForwardKinematics(const
     Function to return a column vector of (joint variables)_dot
 */ 
 template<typename T>
-inline Eigen::Matrix<T,Eigen::Dynamic,1> RobotLinks<T>::getThetaDotVec()
+inline Eigen::Matrix<T,Eigen::Dynamic,1> RobotLinks<T>::getJointDotVec()
 {   
-    // TODO: account for prismatic joints
-    Eigen::Matrix<T,Eigen::Dynamic,1> theta_dot_vec(LinkedJoints.size(),1);
+    Eigen::Matrix<T,Eigen::Dynamic,1> joint_dot_vec(LinkedJoints.size(),1);
+
+    for(int i=0; i<LinkedJoints.size(); i++)
+    {
+        joint_dot_vec(i,0) = *(LinkedJoints[i]->joint_var_dot_i); //joint_var_dot is a pointer as well
+    }
+
+    return joint_dot_vec;
+}
+
+/*
+    Function to return a column vector of (joint variables)
+*/ 
+template<typename T>
+inline Eigen::Matrix<T,Eigen::Dynamic,1> RobotLinks<T>::getJointVec()
+{   
+    Eigen::Matrix<T,Eigen::Dynamic,1> joint_vec(LinkedJoints.size(),1);
 
     for(int i=0; i<LinkedJoints.size() ;i++)
     {
-        theta_dot_vec(i,0) = LinkedJoints[i]->theta_dot_i;
+        joint_vec(i,0) = *(LinkedJoints[i]->joint_var_i); //joint_var is a pointer as well
     }
 
-    return theta_dot_vec;
+    return joint_vec;
 }
 
 template<typename T>
-inline Eigen::Matrix<T,Eigen::Dynamic,1> RobotLinks<T>::getThetaVec()
+inline Eigen::Matrix<T,Eigen::Dynamic,1> RobotLinks<T>::getJointVec(const bool& offset)
 {   
-    // TODO: account for prismatic joints
-    Eigen::Matrix<T,Eigen::Dynamic,1> theta_dot_vec(LinkedJoints.size(),1);
+    Eigen::Matrix<T,Eigen::Dynamic,1> joint_vec(LinkedJoints.size(),1);
 
     for(int i=0; i<LinkedJoints.size() ;i++)
     {
-        theta_dot_vec(i,0) = LinkedJoints[i]->theta_i;
+        joint_vec(i,0) = LinkedJoints[i]->getJointVar(offset);
     }
 
-    return theta_dot_vec;
+    return joint_vec;
+}
+/*
+    Function to pass a column vector of joint variables (assuming the offset is included) and set each joint
+*/ 
+template<typename T>
+inline void RobotLinks<T>::setJointVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_new)
+{   
+    // Assumes that the joint offset is included
+    for(int i=0; i<LinkedJoints.size() ;i++)
+    {
+        *(LinkedJoints[i]->joint_var_i) = joint_new(i,0); //joint_var is a pointer as well
+    }
+
 }
 
 template<typename T>
-inline void RobotLinks<T>::setThetaVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& theta_new)
+inline void RobotLinks<T>::setJointVec(const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_new, const bool& offset)
 {   
-
     for(int i=0; i<LinkedJoints.size() ;i++)
     {
-        LinkedJoints[i]->theta_i = theta_new(i,0);
+        LinkedJoints[i]->setJointVar(joint_new, offset);
     }
-
 }
+
 } //namespace Kinematics
