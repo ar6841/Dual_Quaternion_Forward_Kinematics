@@ -6,9 +6,9 @@ using namespace std;
 int main()
 {
     Kinematics::RobotLinks<double> R3_robot;
-    DH::DH_joint<double> J1(3.33,2.0,10.0,6.1);
-    DH::DH_joint<double> J2(99,0.0,5.0,0.0);
-    DH::DH_joint<double> J3(0.22,0.0,2.0,0.0);
+    DH::DH_joint<double> J1(3.33,2.0,10.0,6.1,-90);
+    DH::DH_joint<double> J2(99,0.0,5.0,0.0,-45);
+    DH::DH_joint<double> J3(0.22,0.0,2.0,0.0,-30);
 
 
     R3_robot.addJoint(J1);
@@ -41,8 +41,22 @@ int main()
     // Test Jacobians
 
     cout<<"\n Jacobian Matrix:"<<Kinematics::ComputeJacobian(R3_robot)<<endl;
-    cout<<"\n Theta dot:"<<R3_robot.getThetaDotVec()<<endl;
+    cout<<"\n Theta dot:"<<R3_robot.getJointDotVec()<<endl;
     cout<<"\n pose_dot:"<<Kinematics::compute_pose_dot(R3_robot)<<endl;
+
+    cout<<"\n Theta:"<<R3_robot.getJointVec()<<endl;
+
+    Eigen::Matrix<double,3,1> theta_n;
+
+    theta_n<<30,40,50;
+
+    cout<<"\n Theta:"<<theta_n<<endl;
+
+    R3_robot.setJointVec(theta_n);
+
+
+    cout<<"\n Theta:"<<R3_robot.getJointVec()<<endl;
+
 
     // 
     return 0;
