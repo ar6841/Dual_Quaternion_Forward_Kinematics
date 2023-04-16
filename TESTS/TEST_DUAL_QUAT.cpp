@@ -34,8 +34,16 @@ int main() {
 
   std::cout<<"\n"<<QN.dual().w()<<std::endl;
 
-  
+  QN = 2.0*QN;
 
+  std::cout<<"\n"<<QN.dual().w()<<std::endl;
+
+  Eigen::Matrix<double,8,8> K(0.1*Eigen::MatrixXd::Identity(8, 8));
+
+  std::cout<<"\n"<<K<<std::endl;
+
+
+  std::cout<<"\nK*QN"<<K*QN<<std::endl;
 
   std::cout<<"\ndone";
 
