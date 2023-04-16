@@ -18,7 +18,7 @@
 
 #include"dualquat/dualquat.h"
 
-namespace ScrewTheory
+namespace Kinematics
 {
 
 template<typename T>

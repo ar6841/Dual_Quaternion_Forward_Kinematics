@@ -22,7 +22,7 @@ enum JointType{REVOLUTE,PRISMATIC,MIX};
     class DH_joint
     {
         private:
-            JointType type_i;
+            const JointType type_i;
 
         public:
             T theta_i,d_i; //Joint variables (Don't make this private its too annoying)
@@ -43,10 +43,10 @@ enum JointType{REVOLUTE,PRISMATIC,MIX};
             theta_2dot_i(T(0)), d_2dot_i(T(0)),
             type_i(REVOLUTE), joint_offset(T(0))
             {
-                //constructor to initialize the DH joint object
+                setJointVar(theta_i,d_i); //add the offset to the correct joint variable
             }
 
-            explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d, const JointType& jointType, const T& offset) : 
+           explicit DH_joint(const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
             
             theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
             theta_dot_i(T(0)), d_dot_i(T(0)), 
@@ -54,10 +54,25 @@ enum JointType{REVOLUTE,PRISMATIC,MIX};
             type_i(REVOLUTE), joint_offset(T(offset))
             {
                 //constructor to initialize the DH joint object
+                setJointVar(theta_i,d_i);
             }
-            // TODO: add more constructors
-            T getJointVar();
-            void setJointVar(const T& q);
+
+            explicit DH_joint(const JointType& type, const T& theta, const T& alpha, const T& a, const T& d, const T& offset) : 
+            theta_i(theta), alpha_i(alpha), a_i(a), d_i(d), 
+            theta_dot_i(T(0)), d_dot_i(T(0)), 
+            theta_2dot_i(T(0)), d_2dot_i(T(0)),
+            type_i(type), joint_offset(T(offset))
+            {
+                //constructor to initialize the DH joint object
+                setJointVar(theta_i,d_i);
+            }
+            
+
+            //Member functions
+            T getJointVar(); // Avoid the unecessary calculation to imporve performance
+            T getJointVar(const bool& offset);
+
+            void setJointVar(const T& theta, const T& d);
             
     }; // class DH_joint
 
@@ -83,17 +98,42 @@ enum JointType{REVOLUTE,PRISMATIC,MIX};
         }
     
     }
+
     template<typename T>
-    inline void DH_joint<T>::setJointVar(const T& q)
+    inline T DH_joint<T>::getJointVar(const bool& offset)
+    {
+        T result = offset ? T(1):T(0);
+
+        switch(type_i)
+        {
+            case REVOLUTE:
+                return theta_i - result*joint_offset;
+                break;
+
+            case PRISMATIC:
+                return d_i - result*joint_offset;
+                break;
+                
+            case MIX:
+                return NULL; //Add support for mixed joints
+            default:
+                return NULL;
+                break;
+            
+        }
+    
+    }
+    template<typename T>
+    inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
     {
         switch(type_i)
         {
             case REVOLUTE:
-                theta_i = q+joint_offset;
+                theta_i = theta+joint_offset;
             break;
 
             case PRISMATIC:
-                d_i = q + joint_offset;
+                d_i = d + joint_offset;
             break;
 
             case MIX: //Add support for mixed joints

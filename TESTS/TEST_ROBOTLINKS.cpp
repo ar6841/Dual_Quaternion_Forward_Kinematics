@@ -5,7 +5,7 @@
 using namespace std;
 int main()
 {
-    ForwardKinematics::RobotLinks<double> R3_robot;
+    Kinematics::RobotLinks<double> R3_robot;
     DH::DH_joint<double> J1(3.33,2.0,10.0,6.1);
     DH::DH_joint<double> J2(99,0.0,5.0,0.0);
     DH::DH_joint<double> J3(0.22,0.0,2.0,0.0);
@@ -29,7 +29,7 @@ int main()
     cout<<"\n"<<R3_robot.getJoint(0)->theta_i;
 
     // Test kinematics result
-    dualquat::DualQuaternion<double> Q1 = ForwardKinematics::Pose_frame_iprev_i(J3)*ForwardKinematics::Pose_frame_iprev_i(J2)*ForwardKinematics::Pose_frame_iprev_i(J1);
+    dualquat::DualQuaternion<double> Q1 = Kinematics::Pose_frame_iprev_i(J3)*Kinematics::Pose_frame_iprev_i(J2)*Kinematics::Pose_frame_iprev_i(J1);
     dualquat::DualQuaternion<double> Q2 = R3_robot.ComputeForwardKinematics();
 
     cout<<"\n"<<"Equality? : "<<dualquat::almost_equal(Q1,Q2,0.001); //Its working!
@@ -40,9 +40,9 @@ int main()
 
     // Test Jacobians
 
-    cout<<"\n Jacobian Matrix:"<<ForwardKinematics::ComputeJacobian(R3_robot)<<endl;
+    cout<<"\n Jacobian Matrix:"<<Kinematics::ComputeJacobian(R3_robot)<<endl;
     cout<<"\n Theta dot:"<<R3_robot.getThetaDotVec()<<endl;
-    cout<<"\n pose_dot:"<<ForwardKinematics::compute_pose_dot(R3_robot)<<endl;
+    cout<<"\n pose_dot:"<<Kinematics::compute_pose_dot(R3_robot)<<endl;
 
     // 
     return 0;

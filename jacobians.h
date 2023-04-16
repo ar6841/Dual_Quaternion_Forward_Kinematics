@@ -13,7 +13,7 @@
 #include "dualquat/Eigen/Dense"
 
 
-namespace ForwardKinematics
+namespace Kinematics
 {
 
 /*

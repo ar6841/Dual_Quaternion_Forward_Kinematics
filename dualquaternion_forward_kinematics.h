@@ -1,5 +1,8 @@
 #pragma once
 #include "pose_dual_quaternion.h"
+/*
+PROTOTYPE FILE, ITS NOT USED ANYWHERE
+*/
 
 /*
 Create a dynamically linked list of the joints in the robot
