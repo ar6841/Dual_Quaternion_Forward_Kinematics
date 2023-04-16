@@ -44,8 +44,7 @@ Pose_frame_iprev_i(const DH::DH_joint<T>& joint_i) // Pass by reference
     T q_8 = (-(joint_i.a_i*q_3)/2 + (joint_i.d_i*q_1)/2);
 
     //Convert to dual quaternion and return
-    dualquat::DualQuaternion<T> q_pose_iprev_i(q_1,q_2,q_3,q_4,q_5,q_6,q_7,q_8);
-    return q_pose_iprev_i;
+    return dualquat::DualQuaternion<T>(q_1,q_2,q_3,q_4,q_5,q_6,q_7,q_8);
 }
 
 /* 
@@ -57,7 +56,7 @@ template<typename T>
 dualquat::DualQuaternion<T>   
 Pose_frame_i_iprev(const DH::DH_joint<T>& joint_i)
 { 
-    return dualquat::quaternion_conjugate(Pose_frame_iprev_i(joint_i)); //q_pose_iprev_i
+    return dualquat::quaternion_conjugate(Pose_frame_iprev_i(joint_i)); //q_pose_i_iprev
 }
 
 /* 

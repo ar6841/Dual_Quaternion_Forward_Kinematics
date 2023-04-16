@@ -67,7 +67,7 @@ ComputeJacobian(RobotLinks<T>& Robot)
         jacobian_i.dual().y(),
         jacobian_i.dual().z());
 
-        q_0_i = Pose_frame_i_iprev(*Robot.getJoint(i))*q_0_i;
+        q_0_i = q_0_i*Pose_frame_iprev_i(*Robot.getJoint(i));
         
     }
 
