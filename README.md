@@ -88,7 +88,30 @@ $$
 
 Jacobians:
 
+$$
+J(\underline{\mathbf{q}})=\frac{d \overrightarrow{\mathbf{q}}}{d \vec{\theta}}=\frac{d}{d \theta}\left(\begin{array}{c}
+q_1 \\
+\vdots \\
+q_4 \\
+q_5 \\
+\vdots \\
+q_8
+\end{array}\right)=\left(\begin{array}{ccc}
+\frac{\partial q_1}{\partial \theta_1} & \ldots & \frac{\partial q_1}{\partial \theta_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial q_8}{\partial \theta_1} & \ldots & \frac{\partial q_8}{\partial \theta_n}
+\end{array}\right)
+$$
+
+$J(\underline{\mathbf{q}})$ has been analytically derived for any robot using the alorithm presented in [[1]](https://hal.science/hal-01478225/file/Robot_Kinematic_Modeling_and_Control_Based_on_Dual_Quaternion_Algebra_Part_I_Fundamentals_28Feb2017.pdf)
+
 Mapping from joint rates to pose rate:
+
+$$
+\operatorname{vec} {}^0\underline{\dot{x}}_{N}=\mathrm{J}_{\underline{x}} \dot{\theta}
+$$
+
+Where $\dot{\theta}$ is a vector.
 
 
 ## Compatibility
@@ -104,8 +127,14 @@ Supports C++ 11 or higher.
 
 ## References
 
-1. [https://dcsl.gatech.edu/papers/mdpi18%20(Printed).pdf]
-2. [https://hal.science/hal-01478225/file/Robot_Kinematic_Modeling_and_Control_Based_on_Dual_Quaternion_Algebra_Part_I_Fundamentals_28Feb2017.pdf]
+[1] Adorno, B.V. (2017) *Robot Kinematic Modeling and Control Based on Dual
+Quaternion Algebra Part I: Fundamentals*, *ReasearchGate*. Available at:
+https://hal.science/hal-01478225v1 (Accessed: April 9, 2023).
+
+[2] Valverde, A. (2018) *Spacecraft Robot Kinematics Using Dual
+Quaternions*, *MDPI*. Available at:
+https://www.dcsl.gatech.edu/papers/mdpi18%20(Printed).pdf (Accessed:
+April 9, 2023).
 
 ## Notes
 
