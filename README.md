@@ -43,7 +43,8 @@ ${ }^0 T_{N} $
 `Eigen::Matrix<T,8,1> pose_vec(compute_pose_dot(MyRobot));`
 
 ## Explanation
-A dual quaternion:
+
+### A dual quaternion:
 
 $$
 \underline{q}=\mathcal{P}(\underline{q})+\varepsilon \mathcal{D}(\underline{q})
@@ -52,6 +53,8 @@ $$
 
 Where $\mathcal{P}(\underline{q})$ is the primary quaternion, $\mathcal{D}(\underline{q})$ is the dual quaternion, and $\varepsilon^2=0$ 
 
+
+### Pose transform
 
 The relative pose from frame i to frame i-1 in dual quaternion space is given by:
 
@@ -80,13 +83,13 @@ $$
 $$
 
 
-Composition transformations
+### Composition transformations
 
 $$
 { }^0 \underline{q}_{N}= { }^0 \underline{q}_{1}{ }^1 \underline{q}_{2}{ }^2 \underline{q}_{3}  . . .{ }^N{ }^-{ }^1 \underline{q}_{N} 
 $$
 
-Jacobians:
+### Jacobians:
 
 $$
 J(\underline{\mathbf{q}})=\frac{d \overrightarrow{\mathbf{q}}}{d \vec{\theta}}=\frac{d}{d \theta}\left(\begin{array}{c}
@@ -105,7 +108,7 @@ $$
 
 $J(\underline{\mathbf{q}})$ has been analytically derived for any robot using the alorithm presented in [[1]](https://hal.science/hal-01478225/file/Robot_Kinematic_Modeling_and_Control_Based_on_Dual_Quaternion_Algebra_Part_I_Fundamentals_28Feb2017.pdf)
 
-Mapping from joint rates to pose rate:
+### Mapping from joint rates to pose rate:
 
 $$
 \operatorname{vec} {}^0\underline{\dot{x}}_{N}=\mathrm{J}_{\underline{x}} \dot{\theta}
