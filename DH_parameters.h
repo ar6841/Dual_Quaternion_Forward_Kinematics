@@ -35,6 +35,9 @@ class DH_joint
 
         const T alpha_i, a_i, joint_offset; //Joint constraints
 
+        /*
+            Constructors
+        */
         DH_joint()
         {}
 
@@ -67,15 +70,48 @@ class DH_joint
         {
             //constructor to initialize the DH joint object
             setJointVar(theta_i,d_i);
-        }
-        
+        } 
 
-        //Member functions
+        /*
+            Copy constructors
+        */
+
+        DH_joint(const DH_joint<T>& JointToBeCopied) //don't trust the '=default' copy constructor
+        {
+            type_i = JointToBeCopied.getJointType();
+
+            theta_i = JointToBeCopied.theta_i;
+            theta_dot_i = JointToBeCopied.theta_dot_i;
+            theta_2dot_i = JointToBeCopied.theta_2dot_i;
+
+            d_i = JointToBeCopied.d_i;
+            d_dot_i = JointToBeCopied.d_dot_i;
+            d_2dot_i = JointToBeCopied.d_2dot_i;
+
+            alpha_i = JointToBeCopied.alpha_i;
+            a_i = JointToBeCopied.a_i;
+
+            joint_offset = JointToBeCopied.joint_offset;
+
+            setJointVar();
+        }
+
+        DH_joint(const DH_joint<T>& JointToBeCopied, const T& joint_var) : DH_joint(JointToBeCopied)
+        {
+            setJointVar(joint_var,true);
+        }
+
+        /*
+            Member functions
+        */
         T getJointVar(); // Avoid the unecessary calculation to imporve performance
         T getJointVar(const bool& offset);
 
+        void setJointVar();
         void setJointVar(const T& q); //asume no offset or offset is off
         void setJointVar(const T& q, const bool& offset);
+
+        JointType getJointType() {return type_i;}
         
 }; // class DH_joint
 
@@ -108,6 +144,30 @@ inline void DH_joint<T>::setJointVar(const T& q, const bool& offset)
 }
 
 template<typename T>
+inline void DH_joint<T>::setJointVar()
+{
+    switch(type_i)
+    {
+        case REVOLUTE:
+            joint_var_i = &theta_i;
+            joint_var_dot_i = &theta_dot_i;
+        break;
+
+        case PRISMATIC:
+            joint_var_i = &d_i;
+            joint_var_dot_i = &d_dot_i;
+        break;
+
+        case MIX: //Add support for mixed joints
+        break;
+
+        default:
+        break;
+        
+    }
+}
+
+template<typename T>
 inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
 {
     switch(type_i)
@@ -132,7 +192,6 @@ inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
         
     }
 }
-
 
 
 } // namespace DH_joint

@@ -42,6 +42,8 @@ class RobotLinks
         */ 
         dualquat::DualQuaternion<T> ComputeForwardKinematics(const int& NumJoints = -1);
 
+        dualquat::DualQuaternion<T> ComputeForwardKinematics(const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_vec, const int& NumJoints=-1);
+
         Eigen::Matrix<T,Eigen::Dynamic,1> getJointDotVec(); //Function to return a column vector of (joint variables)_dot
 
         Eigen::Matrix<T,Eigen::Dynamic,1> getJointVec(); //Function to return a column vector of (joint variables)
@@ -103,17 +105,39 @@ inline DH::DH_joint<T>* RobotLinks<T>::getJoint(const int& pos) //Function to re
 template<typename T>
 inline dualquat::DualQuaternion<T> RobotLinks<T>::ComputeForwardKinematics(const int& NumJoints)
 {
-    int joint_i = ((NumJoints == -1)? LinkedJoints.size()-1 : NumJoints-1); 
+    int joint_n = ((NumJoints == -1)? LinkedJoints.size()-1 : NumJoints-1); 
 
-    Check_ERROR_OUTOFBOUNDS("ComputeForwardKinematics()",joint_i);
+    Check_ERROR_OUTOFBOUNDS("ComputeForwardKinematics()",joint_n);
 
     T type; //detect type for identety function (just a placeholder)
 
     dualquat::DualQuaternion<T> q_curr = dualquat::identity(type);
 
-    for(int i = 0; i<=joint_i; i++)
+    for(int i = 0; i<=joint_n; i++)
     {
         q_curr = q_curr*Pose_frame_iprev_i(*LinkedJoints[i]);
+    }
+
+    return q_curr;
+}
+/*
+    Function to calculate the pose in dualquat space, given a robot linkage and a joint vector
+*/
+template<typename T>
+inline dualquat::DualQuaternion<T> RobotLinks<T>::ComputeForwardKinematics(
+    const Eigen::Matrix<T,Eigen::Dynamic,1>& joint_vec, const int& NumJoints)
+{
+    int joint_n = ((NumJoints == -1)? LinkedJoints.size()-1 : NumJoints-1); 
+
+    Check_ERROR_OUTOFBOUNDS("ComputeForwardKinematics()",joint_n);
+
+    T type; //detect type for identety function (just a placeholder)
+
+    dualquat::DualQuaternion<T> q_curr = dualquat::identity(type);
+
+    for(int i = 0; i<=joint_n; i++)
+    {
+        q_curr = q_curr*Pose_frame_iprev_i(DH::DH_joint<T>(*LinkedJoints[i],joint_vec(i,0)));
     }
 
     return q_curr;

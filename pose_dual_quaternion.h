@@ -47,6 +47,27 @@ Pose_frame_iprev_i(const DH::DH_joint<T>& joint_i) // Pass by reference
     return dualquat::DualQuaternion<T>(q_1,q_2,q_3,q_4,q_5,q_6,q_7,q_8);
 }
 
+template<typename T>
+dualquat::DualQuaternion<T>   
+Pose_frame_iprev_i(const T& theta_i, const T& alpha_i, const T& a_i, const T& d_i) // Pass by reference
+{ 
+    T alpha_rad_half = (degree_to_radian(alpha_i))/2;
+    T theta_rad_half = (degree_to_radian(theta_i))/2;
+
+    // Elements of R8 representation of dual quaternion
+    T q_1 = cos(alpha_rad_half)*cos(theta_rad_half); // Calculate here to avoid too many function calls.
+    T q_2 = sin(alpha_rad_half)*cos(theta_rad_half);
+    T q_3 = sin(alpha_rad_half)*sin(theta_rad_half);
+    T q_4 = cos(alpha_rad_half)*sin(theta_rad_half);
+    T q_5 = (-(a_i*q_2)/2 - (d_i*q_4)/2);
+    T q_6 = ((a_i*q_1)/2 - (d_i*q_3)/2);
+    T q_7 = ((a_i*q_4)/2 + (d_i*q_2)/2);
+    T q_8 = (-(a_i*q_3)/2 + (d_i*q_1)/2);
+
+    //Convert to dual quaternion and return
+    return dualquat::DualQuaternion<T>(q_1,q_2,q_3,q_4,q_5,q_6,q_7,q_8);
+}
+
 /* 
    Function that returns transofrmation from frame iprev to i (Equivalent to iprev_T_i)
    as a unit dual quaternion
