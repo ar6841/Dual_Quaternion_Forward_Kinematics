@@ -51,7 +51,7 @@ $$
 $$
 
 
-Where $\mathcal{P}(\underline{q})$ is the primary quaternion, $\mathcal{D}(\underline{q})$ is the dual quaternion, and $\varepsilon^2=0$ 
+Where $\mathcal{P}(\underline{q})$ is the primary part (quaternion), $\mathcal{D}(\underline{q})$ is the dual part (quaternion), and $\varepsilon^2=0$ 
 
 
 ### Pose transform
