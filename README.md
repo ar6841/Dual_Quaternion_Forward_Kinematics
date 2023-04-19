@@ -1,9 +1,11 @@
 # Dual_Quaternion_Forward_Kinematics
 C++ header files for performing forward kinematics using dual quaternion algebra.
-Dual quaternions provide a more stable and compact form for representing rigid body motion, this library should help you model the kinemaics of your robot using only dual quaternions. The underlying assumption is that you know the DH parameters of each joint on your robot. Support will be added soon for parameterization using screw theory.
 
+Dual quaternions are extentions of quaternions as a dual number, just as quaternions of unit length can be used to represent 3D rotations, dual quaternions of unit length can be used to represent 3D rigid motions. Dual quaternions provide a more stable and compact form for representing rigid body motion, and a unified space for performing modelling, control and planning when compared to classical tranformation methods. 
 
-TODO: Add the equations and explanations
+This library should help you model the kinemaics of your robot using only dual quaternions. The underlying assumption is that you know the DH parameters of each joint on your robot. 
+
+Support will be added soon for parameterization using screw theory and pose transforms of 6DOF joints.
 
 
 ## Dependencies
