@@ -76,23 +76,14 @@ class DH_joint
             Copy constructors
         */
 
-        DH_joint(const DH_joint<T>& JointToBeCopied) //don't trust the '=default' copy constructor
+        DH_joint(const DH_joint<T>& JointToBeCopied) :
+        type_i(JointToBeCopied.type_i),
+         theta_i(JointToBeCopied.theta_i), theta_dot_i(JointToBeCopied.theta_dot_i),theta_2dot_i(JointToBeCopied.theta_2dot_i), 
+         d_i(JointToBeCopied.d_i),d_dot_i(JointToBeCopied.d_dot_i), d_2dot_i(JointToBeCopied.d_2dot_i),
+         alpha_i(JointToBeCopied.alpha_i), a_i(JointToBeCopied.a_i),
+         joint_offset(JointToBeCopied.joint_offset)
+        //How did type_i get initialized if its private???    //don't trust the '=default' copy constructor
         {
-            type_i = JointToBeCopied.getJointType();
-
-            theta_i = JointToBeCopied.theta_i;
-            theta_dot_i = JointToBeCopied.theta_dot_i;
-            theta_2dot_i = JointToBeCopied.theta_2dot_i;
-
-            d_i = JointToBeCopied.d_i;
-            d_dot_i = JointToBeCopied.d_dot_i;
-            d_2dot_i = JointToBeCopied.d_2dot_i;
-
-            alpha_i = JointToBeCopied.alpha_i;
-            a_i = JointToBeCopied.a_i;
-
-            joint_offset = JointToBeCopied.joint_offset;
-
             setJointVar();
         }
 
@@ -107,11 +98,14 @@ class DH_joint
         T getJointVar(); // Avoid the unecessary calculation to imporve performance
         T getJointVar(const bool& offset);
 
+        /*
+            Settter functions
+        */
         void setJointVar();
         void setJointVar(const T& q); //asume no offset or offset is off
         void setJointVar(const T& q, const bool& offset);
 
-        JointType getJointType() {return type_i;}
+        JointType getJointType() { return type_i;}
         
 }; // class DH_joint
 
