@@ -16,8 +16,6 @@
 
 // TODO: use convert_to_dualquat() in dualquat_helper which converts from screw paramers to dual quaternion.
 
-#include"dualquat/dualquat.h"
-
 namespace Kinematics
 {
 
