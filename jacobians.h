@@ -153,14 +153,14 @@ ComputeGenerailzedJacobian(RobotLinks<T>& Robot)
     T h8 = 2*ForwardK_dq.dual.z();
     T zero = T(0); // avoid calling this too many times
 
-    return Eigen::Matrix<T,8,8>({{h5,h6,h7,h8,h1,h2,h3,h4},
-                        {h6,-h5,h8,-h7,-h2,h1,-h4,h3},
-                        {h7,-h8,-h5,h6,-h3,h4,h1,-h2},
-                        {h8,h7,-h6,-h5,-h4,-h3,h2,h1},
-                        {h1,h2,h3,h4,zero,zero,zero,zero},
-                        {-h2,h1,-h4,h3,zero,zero,zero,zero},
-                        {-h3,h4,h1,-h2,zero,zero,zero,zero}
-                        {-h4,-h3,h2,h1,zero,zero,zero,zero}});
+    return (Eigen::Matrix<T,8,8>()<<h5,h6,h7,h8,h1,h2,h3,h4,
+                                    h6,-h5,h8,-h7,-h2,h1,-h4,h3,
+                                    h7,-h8,-h5,h6,-h3,h4,h1,-h2,
+                                    h8,h7,-h6,-h5,-h4,-h3,h2,h1,
+                                    h1,h2,h3,h4,zero,zero,zero,zero,
+                                    -h2,h1,-h4,h3,zero,zero,zero,zero,
+                                    -h3,h4,h1,-h2,zero,zero,zero,zero
+                                    -h4,-h3,h2,h1,zero,zero,zero,zero).finished();
 
 }
 
