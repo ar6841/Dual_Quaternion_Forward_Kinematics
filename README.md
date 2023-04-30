@@ -13,7 +13,7 @@ Support will be added soon for parameterization using screw theory and pose tran
 1. [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page)
 2. [dualquat](https://github.com/Hasenpfote/dualquat)
 
-*Some changes have been made to the dualquat library so I recommend using my version, all the dependencies are included in this file*.
+*Some changes have been made to the dualquat library (including new operators!) so I recommend using my version, all the dependencies are included in this file*.
 
 ## Usage
 Here are some short examples of some of the functions included and how to use them,
