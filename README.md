@@ -116,7 +116,7 @@ $$
 \mathrm{vec} {}^0\underline{\dot{x}_{N}} = \mathrm{J} ({\underline{x}}) \dot{\theta}
 $$
 
-Where $\dot{\theta}$ is a vector.
+Where $\dot{\theta}$ is the joint velocity a vector.
 
 
 ## Compatibility
