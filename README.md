@@ -116,7 +116,7 @@ $$
 \mathrm{vec} {}^0\underline{\dot{x}_{N}} = \mathrm{J} ({\underline{x}}) \dot{\theta}
 $$
 
-Where $\dot{\theta}$ is the joint velocity a vector.
+Where $\dot{\theta}$ is the joint velocity a vector. This Jacobian represents a mapping from joint rate to a frame velocity
 
 
 ## Compatibility
