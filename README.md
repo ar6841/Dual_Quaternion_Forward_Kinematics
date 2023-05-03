@@ -113,7 +113,7 @@ $J(\underline{\mathbf{q}})$ has been analytically derived for any robot using th
 ### Mapping from joint rates to pose rate:
 
 $$
-\mathrm{vec} {}^0\underline{\dot{x}}_{N}=\mathrm{J}_{\underline{x}} \dot{\theta}
+\mathrm{vec} {}^0\underline{\dot{x}_{N}} = \mathrm{J} ({\underline{x}}) \dot{\theta}
 $$
 
 Where $\dot{\theta}$ is a vector.
