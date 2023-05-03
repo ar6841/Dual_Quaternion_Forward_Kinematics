@@ -6,10 +6,10 @@
  * 
  * NOTES: THE CORRECT CONJUGATE TO USE ACCORDING TO THE PAPER is quaternion_conjugate() within dualquat -> dualquat_common.h
  * 
- * IMORTANT: The norm for shifting frames from the joint 0 to end enffector is to pre-multiply the change of frame DualQuaternions,
+ * IMORTANT: The norm for shifting frames from the joint 0 to end enffector is to post-multiply the change of frame DualQuaternions,
  *           assuming that you're calculating change of frame from 0 frame to 1st frame initially. (0_T_1) then (1_T_2).. and so on.
- *           For example, for a serial RR configuration:      q_0_endeffector = q_2_endeffector*q_1_2*q_0_1
- *                                                            q_endeffector_0 = q_1_0*q_2_1*q_endeffector_2
+ *           For example, for a serial RR configuration:      q_0_endeffector = q_1_0*q_2_1*q_endeffector_2
+ *                                                            q_endeffector_0 = q_2_endeffector*q_1_2*q_0_1
  * 
  * TODO: Add support for screw theory parameters, they seem to perform better
 */
