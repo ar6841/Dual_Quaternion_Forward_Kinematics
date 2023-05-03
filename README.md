@@ -88,7 +88,7 @@ $$
 ### Composition transformations
 
 $$
-{ }^0 \underline{q}_{N}= { }^0 \underline{q}_{1}{ }^1 \underline{q}_{2}{ }^2 \underline{q}_{3}  . . .{ }^N{ }^-{ }^1 \underline{q}_{N} 
+{ }^0 \underline{q_N} =  { }^0 \underline{q_1}{ }^1 \underline{q_2} { }^2 \underline{q_3}  . . .{ }^N{ }^-{ }^1 \underline{q_N} 
 $$
 
 ### Jacobians:
