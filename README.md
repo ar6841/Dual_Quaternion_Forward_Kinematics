@@ -20,29 +20,39 @@ Here are some short examples of some of the functions included and how to use th
 
 1. Create a robot joint using the `DH_joints` class 
 
-`DH::DH_joint<double> J1(theta,alpha,a,d, DH::REVOLUTE, offset);`
+```c++
+DH::DH_joint<double> J1(theta,alpha,a,d, DH::REVOLUTE, offset);
+```
 
 2. Add all the joints in the order you need using the `RobotLinks` class
 
-`MyRobot.addJoint(J1);`
+```c++
 
-`MyRobot.addJoint(J2);`
+MyRobot.addJoint(J1);
+MyRobot.addJoint(J2);
+MyRobot.addJoint(J3);
 
-`MyRobot.addJoint(J3);`
+```
 
 3. Use `ComputeForwardKinematics()` to compute the pose of the end frame wrt to the inerial frame. (Equivalent to 
 ${ }^0 T_{N} $
 )
 
-`dualquat::DualQuaternion<T> pose = MyRobot.ComputeForwardKinematics()`
+```c++
+dualquat::DualQuaternion<T> pose = MyRobot.ComputeForwardKinematics()
+```
 
 4. You can also compute the the Jacobian using `ComputeJacobian()`
 
-`Eigen::Matrix<double,8,Eigen::Dynamic> J(ComputeJacobian(MyRobot));`
+```c++
+Eigen::Matrix<double,8,Eigen::Dynamic> J(ComputeJacobian(MyRobot));
+```
 
 5. Compute rate of change of pose in dualquat coordinates using `compute_pose_dot()`
 
-`Eigen::Matrix<T,8,1> pose_vec(compute_pose_dot(MyRobot));`
+```c++
+Eigen::Matrix<T,8,1> pose_vec(compute_pose_dot(MyRobot));
+```
 
 ## Explanation
 
