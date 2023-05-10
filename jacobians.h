@@ -142,6 +142,7 @@ template<typename T>
 Eigen::Matrix<T,8,8>
 ComputeGenerailzedJacobian(RobotLinks<T>& Robot)
 {
+    // Just copy the values into h1, h2, h3.. better than calling dq.real.w() 9 times and multiplying it with 2 every time
     dualquat::DualQuaternion<T> ForwardK_dq = Robot.ComputeForwardKinematics();
     T h1 = 2*ForwardK_dq.real.w();
     T h2 = 2*ForwardK_dq.real.x();
