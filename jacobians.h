@@ -140,7 +140,7 @@ ComputeJacobian(RobotLinks<T>& Robot, const dualquat::DualQuaternion<T>& Forward
 */
 template<typename T>
 Eigen::Matrix<T,8,8>
-ComputeGenerailzedJacobian(RobotLinks<T>& Robot)
+GenerailzedJacobian(RobotLinks<T>& Robot)
 {
     // Just copy the values into h1, h2, h3.. better than calling dq.real.w() 9 times and multiplying it with 2 every time
     dualquat::DualQuaternion<T> ForwardK_dq = Robot.ComputeForwardKinematics();
@@ -164,6 +164,64 @@ ComputeGenerailzedJacobian(RobotLinks<T>& Robot)
                                     -h4,-h3,h2,h1,zero,zero,zero,zero).finished();
 
 }
+/*
+Return rows swapped generalized jacobian. The angular velocity and linear velocity terms are swapped
+*/
+template<typename T>
+Eigen::Matrix<T,8,8>
+GenerailzedJacobian_swapped(RobotLinks<T>& Robot)
+{
+    // Just copy the values into h1, h2, h3.. better than calling dq.real.w() 9 times and multiplying it with 2 every time
+    dualquat::DualQuaternion<T> ForwardK_dq = Robot.ComputeForwardKinematics();
+    T h1 = 2*ForwardK_dq.real.w();
+    T h2 = 2*ForwardK_dq.real.x();
+    T h3 = 2*ForwardK_dq.real.y();
+    T h4 = 2*ForwardK_dq.real.z();
+    T h5 = 2*ForwardK_dq.dual.w();
+    T h6 = 2*ForwardK_dq.dual.x();
+    T h7 = 2*ForwardK_dq.dual.y();
+    T h8 = 2*ForwardK_dq.dual.z();
+    T zero = T(0); // avoid calling this too many times
+
+    return (Eigen::Matrix<T,8,8>()<<h1,h2,h3,h4,zero,zero,zero,zero,
+                                    -h2,h1,-h4,h3,zero,zero,zero,zero,
+                                    -h3,h4,h1,-h2,zero,zero,zero,zero
+                                    -h4,-h3,h2,h1,zero,zero,zero,zero,
+                                    h5,h6,h7,h8,h1,h2,h3,h4,
+                                    h6,-h5,h8,-h7,-h2,h1,-h4,h3,
+                                    h7,-h8,-h5,h6,-h3,h4,h1,-h2,
+                                    h8,h7,-h6,-h5,-h4,-h3,h2,h1).finished();
+
+}
+
+/*
+Return rows swapped generalized jacobian. The angular velocity and linear velocity terms are swapped
+*/
+template<typename T>
+Eigen::Matrix<T,8,8>
+GenerailzedJacobian_swapped(const dualquat::DualQuaternion<T> dq)
+{
+    // Just copy the values into h1, h2, h3.. better than calling dq.real.w() 9 times and multiplying it with 2 every time
+    T h1 = 2*dq.real.w();
+    T h2 = 2*dq.real.x();
+    T h3 = 2*dq.real.y();
+    T h4 = 2*dq.real.z();
+    T h5 = 2*dq.dual.w();
+    T h6 = 2*dq.dual.x();
+    T h7 = 2*dq.dual.y();
+    T h8 = 2*dq.dual.z();
+    T zero = T(0); // avoid calling this too many times
+
+    return (Eigen::Matrix<T,8,8>()<<h1,h2,h3,h4,zero,zero,zero,zero,
+                                    -h2,h1,-h4,h3,zero,zero,zero,zero,
+                                    -h3,h4,h1,-h2,zero,zero,zero,zero
+                                    -h4,-h3,h2,h1,zero,zero,zero,zero,
+                                    h5,h6,h7,h8,h1,h2,h3,h4,
+                                    h6,-h5,h8,-h7,-h2,h1,-h4,h3,
+                                    h7,-h8,-h5,h6,-h3,h4,h1,-h2,
+                                    h8,h7,-h6,-h5,-h4,-h3,h2,h1).finished();
+
+}
 
 /*
     Function that returns the pose_dot quaternion members as vector
@@ -171,7 +229,7 @@ ComputeGenerailzedJacobian(RobotLinks<T>& Robot)
     Outputs -> (Matrix of size (8,1))
 */
 template<typename T>
-Eigen::Matrix<T,8,1> // Default storage order is ColumnMajour
+Eigen::Matrix<T,8,1> 
 compute_pose_dot(RobotLinks<T>& Robot){ return Eigen::Matrix<T,8,1>(ComputeJacobian(Robot)*Robot.getJointDotVec());}
 
 /*
@@ -180,8 +238,15 @@ compute_pose_dot(RobotLinks<T>& Robot){ return Eigen::Matrix<T,8,1>(ComputeJacob
     Outputs -> (Matrix of size (8,1))
 */
 template<typename T>
-Eigen::Matrix<T,8,1> // Default storage order is ColumnMajour
-compute_twist(RobotLinks<T>& Robot){ return Eigen::Matrix<T,8,1>(ComputeGenerailzedJacobian(Robot)*compute_pose_dot(Robot));}
+Eigen::Matrix<T,8,1> 
+compute_twist(RobotLinks<T>& Robot){ return Eigen::Matrix<T,8,1>(GenerailzedJacobian_swapped(Robot)*compute_pose_dot(Robot));}
+
+template<typename T>
+Eigen::Matrix<T,8,1> 
+compute_twist(const dualquat::DualQuaternion<T>& pose,const dualquat::DualQuaternion<T>& pose_dot)
+{ 
+    return Eigen::Matrix<T,8,1>(GenerailzedJacobian_swapped(pose)*pose_dot);
+}
 
 /*
     Function that returns the generalized forces of an end effector
