@@ -15,8 +15,8 @@
 */
 
 // TODO: use convert_to_dualquat() in dualquat_helper which converts from screw paramers to dual quaternion.
-#include "Eigen/Core"
-#include "Eigen/Geometry"
+#include "dualquat/Eigen/Core"
+#include "dualquat/Eigen/Geometry"
 #include "dualquat/dualquat_helper.h"
 
 namespace Kinematics
@@ -26,8 +26,10 @@ template<typename T>
 struct ScrewParameters
 {
     T theta,d;
-    Vector3<T> l, const Vector3<T> m;
-    dualquat::DualQuaternion<T> return_pose(){return convert_to_dualquat(const Vector3<T>& l, const Vector3<T>& m, T theta, T d)}
+    Eigen::Vector3<T> l;
+    const Eigen::Vector3<T> m;
+    dualquat::DualQuaternion<T> return_pose(){return dualquat::convert_to_dualquat(
+                                                l, m, theta, d);}
     
 };
 

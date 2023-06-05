@@ -3,7 +3,7 @@
 */
 #pragma once
 
-#include "forward_kinematics_dualquaternion.h"
-#include "jacobians.h"
-#include "DH_parameters.h"
-#include "ScrewTheory_Parameters.h"
+#include "include/forward_kinematics_dualquaternion.h"
+#include "include/jacobians.h"
+#include "include/DH_parameters.h"
+#include "include/ScrewTheory_Parameters.h"

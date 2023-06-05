@@ -40,7 +40,7 @@ class DH_joint
 
         const T alpha_i, a_i, joint_offset; //Joint constraints
 
-        const T mass_i;
+        //const T mass_i;
 
         /*
             Constructors
@@ -119,9 +119,9 @@ class DH_joint
 
         JointType getJointType() { return type_i;}
 
-        std::vector<Eigen::Quaternion<T>> getInertia(){return quaternionic_inertia_i};
+        std::vector<Eigen::Quaternion<T>> getInertia(){return quaternionic_inertia_i;}
         
-        Eigen::Quaternion<T> getCOM() {return center_of_mass};
+        Eigen::Quaternion<T> getCOM() {return center_of_mass;}
 }; // class DH_joint
 
 template<typename T>
@@ -201,10 +201,11 @@ inline void DH_joint<T>::setJointVar(const T& theta, const T& d)
         
     }
 }
-
+/*
 template<typename T>
 void DH_joint<T>::setInertia(const Eigen::Matrix<T,3,3>& inertia_tensor)
 {
-    quaternionic_inertia_i = Dynamics::QuaternionicInceria(inertia_tensor);
+    //quaternionic_inertia_i = Dynamics::QuaternionicInceria(inertia_tensor);
 }
+*/
 } // namespace DH_joint

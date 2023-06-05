@@ -1,6 +1,5 @@
 #include <iostream>
-#include "forward_kinematics_dualquaternion.h"
-#include "jacobians.h"
+#include "kinematics.h"
 
 using namespace std;
 int main()
