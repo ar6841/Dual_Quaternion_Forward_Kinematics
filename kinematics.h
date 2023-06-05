@@ -1,7 +1,7 @@
-/*
-    Main header file
-*/
 #pragma once
+/*
+    Parent header file
+*/
 
 #include "include/forward_kinematics_dualquaternion.h"
 #include "include/jacobians.h"
